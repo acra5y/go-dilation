@@ -43,13 +43,13 @@ func UnitaryNDilation(isPD isPositiveDefinite, sqrt squareRoot, newBlockMatrix n
     m, n := t.Dims()
 
     if m != n {
-        return mat.NewDense(0,0, nil), fmt.Errorf("Matrix does not have square dimension")
+        return nil, fmt.Errorf("Matrix does not have square dimension")
     }
 
     defectSquared := defectOperatorSquared(t)
 
     if pd, _ := isPD(&mat.Eigen{}, defectSquared); !pd {
-        return mat.NewDense(0, 0, nil), fmt.Errorf("Input is not a contraction")
+        return nil, fmt.Errorf("Input is not a contraction")
     }
 
     defectSquaredOfTranspose := defectOperatorSquared(t.T())
@@ -92,7 +92,7 @@ func UnitaryNDilation(isPD isPositiveDefinite, sqrt squareRoot, newBlockMatrix n
     unitary, err := newBlockMatrix(rows)
 
     if err != nil {
-        return mat.NewDense(0,0, nil), err
+        return nil, err
     }
 
     return unitary, nil
