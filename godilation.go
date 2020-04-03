@@ -1,5 +1,7 @@
 // This project is licensed under the terms of the MIT license.
 // It provides a function to calculate a unitary n-dilation for a given matrix contraction and a degree using the gonum library.
+// The recipe to calculate the dilation follows the theory mentioned by Béla Szőkefalvi-Nagy in "Analyse harmonique des opérateurs de l'espace de Hilbert" (1967).
+// The matrix square root needed for the dilation is calculated using the Exponential Method for Matrices.
 package godilation
 
 import (
