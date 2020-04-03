@@ -70,7 +70,7 @@ func TestNewBlockMatrixFromSquares(t *testing.T) {
                 []*mat.Dense{mat.NewDense(1, 1, nil), mat.NewDense(1, 2, nil),},
                 []*mat.Dense{mat.NewDense(1, 1, nil), mat.NewDense(1, 1, nil),},
             },
-            expected: mat.NewDense(0, 0, nil),
+            expected: nil,
             desc: "validates all matrices have the same amount of columns",
             err: fmt.Errorf("Unexpected dimension: (1, 2) in row 0, col 1 (Expecting (1, 1))"),
         },
@@ -79,7 +79,7 @@ func TestNewBlockMatrixFromSquares(t *testing.T) {
                 []*mat.Dense{mat.NewDense(1, 1, nil), mat.NewDense(2, 1, nil),},
                 []*mat.Dense{mat.NewDense(1, 1, nil), mat.NewDense(1, 1, nil),},
             },
-            expected: mat.NewDense(0, 0, nil),
+            expected: nil,
             desc: "validates all matrices have the same amount of rows",
             err: fmt.Errorf("Unexpected dimension: (2, 1) in row 0, col 1 (Expecting (1, 1))"),
         },
@@ -88,7 +88,7 @@ func TestNewBlockMatrixFromSquares(t *testing.T) {
                 []*mat.Dense{mat.NewDense(1, 1, nil), mat.NewDense(1, 1, nil),},
                 []*mat.Dense{mat.NewDense(1, 1, nil),mat.NewDense(1, 1, nil),mat.NewDense(1, 1, nil),},
             },
-            expected: mat.NewDense(0, 0, nil),
+            expected: nil,
             desc: "validates length of each row is the same",
             err: fmt.Errorf("Unexpected length of row: 1 has length 3 (Expecting 2)"),
         },
@@ -105,7 +105,11 @@ func TestNewBlockMatrixFromSquares(t *testing.T) {
                 t.Errorf("NewBlockMatrix returned wrong value for err, got: %v, want: %v.", err, table.err)
             }
 
-            if !mat.Equal(blockMatrix, table.expected) {
+            if (blockMatrix != nil && table.expected == nil || blockMatrix == nil && table.expected != nil) {
+                t.Errorf("NewBlockMatrix returned wrong value, got: %v, want: %v.", blockMatrix, table.expected)
+            }
+
+            if (blockMatrix != nil && table.expected != nil && !mat.Equal(blockMatrix, table.expected)) {
                 t.Errorf("NewBlockMatrix returned wrong value, got: %v, want: %v.", blockMatrix, table.expected)
             }
         })

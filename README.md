@@ -12,7 +12,7 @@ The recipe to calculate the dilation follows the theory mentioned by Béla Szők
 ## Development
 
 Run any common `go` tasks such as `go test ./...`.
-This project was built on `go version go1.11.5`.
+This project was built on `go version go1.13.9`.
 
 ## Usage
 

@@ -7,8 +7,8 @@ import (
 )
 
 type EigenComputer interface {
-    Factorize(a mat.Matrix, left, right bool) bool
-    Values(dst []complex128) []complex128
+    Factorize(mat.Matrix, mat.EigenKind) bool
+    Values([]complex128) []complex128
 }
 
 func isSymmetric(a mat.Matrix) bool {
@@ -18,7 +18,7 @@ func isSymmetric(a mat.Matrix) bool {
 func IsPositiveDefinite(eigen EigenComputer, candidate *mat.Dense) (isPositiveDefinite bool, err error) {
     m, n := candidate.Dims()
     c := mat.NewDense(m, n, nil)
-    c.Clone(candidate)
+    c.CloneFrom(candidate)
     err = nil
     isPositiveDefinite = true
 
@@ -27,7 +27,7 @@ func IsPositiveDefinite(eigen EigenComputer, candidate *mat.Dense) (isPositiveDe
         return
     }
 
-    ok := eigen.Factorize(c, false, false)
+    ok := eigen.Factorize(c, mat.EigenNone)
 
     if ok {
         for _, val := range eigen.Values(nil) {

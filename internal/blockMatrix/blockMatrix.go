@@ -33,7 +33,7 @@ func NewBlockMatrixFromSquares(rows [][]*mat.Dense) (*mat.Dense, error) {
     ok, err := validateDims(rows)
 
     if !ok {
-       return mat.NewDense(0, 0, nil), err
+       return nil, err
     }
 
     var d0, d, entriesPerBlock, entriesPerBlockRow, blockDim int

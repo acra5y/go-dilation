@@ -65,15 +65,15 @@ func Calculate(c *mat.Dense) (sq *mat.Dense, err error) {
     sq = mat.NewDense(n, n, nil)
     m2 = mat.NewDense(n, n, nil)
     m3 = mat.NewDense(n, n, nil)
-    sq.Clone(eyeN)
-    m2.Clone(c)
+    sq.CloneFrom(eyeN)
+    m2.CloneFrom(c)
     z = mat.NewDense(n, n, nil)
     z.Sub(c, eyeN)
 
     for i := 1; i <= 100; i++ {
         m3 = nextGuess(c, z, sq, m2)
-        sq.Clone(m2)
-        m2.Clone(m3)
+        sq.CloneFrom(m2)
+        m2.CloneFrom(m3)
 
         if (isIllConditioned(m3, i)) {
             break;

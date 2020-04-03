@@ -12,7 +12,7 @@ type EigenMock struct {
     mockData []complex128
 }
 
-func (eigen EigenMock) Factorize(a mat.Matrix, left, right bool) bool {
+func (eigen EigenMock) Factorize(a mat.Matrix, kind mat.EigenKind) bool {
     return eigen.factorizeOk
 }
 
