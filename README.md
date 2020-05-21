@@ -18,3 +18,5 @@ This project was built on `go version go1.13.9`.
 
 Build n dilations by calling `UnitaryNDilation(m, n)`, where `t`  is of type `*mat.Dense` (see gonum) - the contraction that will be dilated, and `n` is of type `int` - the degree that the dilation will have.
 Import the library as github.com/acra5y/go-dilation.
+
+For ill-conditionend matrices (e.g. with high eigenvalues or eigenvalues close to 0) the result might be imprecise.

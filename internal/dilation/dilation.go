@@ -53,6 +53,18 @@ func UnitaryNDilation(isPD isPositiveDefinite, sqrt squareRoot, newBlockMatrix n
     }
 
     defectSquaredOfTranspose := defectOperatorSquared(t.T())
+    /*
+        We can calculate the square root as it must exist as we assume T is a positive definite contraction:
+        Let T be a positiv definite complex matrix of dimension n times n with ||T|| < 1 (where ||T|| denotes the operator norm).
+        Let T^* denote the conjugate transpose of T.
+        The equivalency (T^*T)^* = (T^*)(T^*)^* = (T^*)T shows T^*T is hermitian.
+        Let I by the eye Matrix of the same dimension as T.
+        It follows that for a given vector v and the euclidean norm |v|: v^*(I − T^*T)v = v^*Iv − v^*T^*Tv = v^*v − (Tv)^*Tv = |v|^2 − |Tv|^2 > 0.
+        The last step ist based on the requirement that ||T|| < 1.
+        For a positive definite matrix we then know that a square root must exist.
+        See also "Harmonic Analysis of Operators on Hilbert Space" by  B. Sz.-Nagy, chapter I, 1. in section 3.
+        (Please note this hint does not have the ambition to be a mathematical proof on its own).
+    */
     defect, _ := sqrt(defectSquared)
     defectOfTransposed, _ := sqrt(defectSquaredOfTranspose)
 
