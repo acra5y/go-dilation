@@ -6,9 +6,10 @@ import (
     "math"
 )
 
-// https://scholarworks.rit.edu/cgi/viewcontent.cgi?article=10419&context=theses
-
 /*
+    The algorithm to calculate the square root of a positive definite matrix is taken from
+    "A New Algorithm for Computing the Square Rootof a Matrix"
+    (https://scholarworks.rit.edu/cgi/viewcontent.cgi?article=10419&context=theses, chapter three):
     1. Declare some nonsingular matrix C with dimensions (n, n).
     2. Initialize i for number of iterations, S_0 = I and S_1 = C.
     3. Initialize Z = C − I.
@@ -16,25 +17,14 @@ import (
     5. After iteration steps stop, find S_{i}^{−1}
     .
     6. Set n × n matrix Q = S_{i+1}(S_{i}^{−1}) − I.
+
+    The step 6 is implemented by solving a linear equation to achieve a better numerical stability:
+    For a matrix A we denote t(A) as the transposed Matrix
+    Using the notation from above, we define Q' := Q - I, R := S_{i}, S := S_{i+1}
+    We have the following equivalency: Q' = S*R^{-1} <=> Q'*R = S <=> t(R)*t(Q') = t(S).
+    This is a linear equation that we can solve without computing a matrix.
+    We assume that the matrix c fulfilles all necessary preconditions.
 */
-
-func inverseViaQR(m *mat.Dense) (inverse *mat.Dense) {
-    n, _ := m.Dims()
-    var q, r *mat.Dense
-    r = mat.NewDense(n, n, nil)
-    q = mat.NewDense(n, n, nil)
-
-    inverse = mat.NewDense(n, n, nil)
-
-    qr := mat.QR{}
-    qr.Factorize(m)
-    qr.QTo(q)
-    qr.RTo(r)
-    inverse.Inverse(r)
-
-    inverse.Product(inverse, q.T())
-    return
-}
 
 func nextGuess(c, z, prePredecessor, predecessor *mat.Dense) (guess *mat.Dense) {
     n, _ := c.Dims()
@@ -80,9 +70,8 @@ func Calculate(c *mat.Dense) (sq *mat.Dense, err error) {
         }
     }
 
-    sq = inverseViaQR(sq)
-    sq.Product(m2, sq)
-    sq.Sub(sq, eyeN)
+    sq.Solve(sq.T(), m2.T())
+    sq.Sub(sq.T(), eyeN)
 
     return
 }
